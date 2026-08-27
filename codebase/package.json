@@ -1,0 +1,51 @@
+{
+  "name": "aetherion",
+  "version": "0.1.0",
+  "description": "Aetherion — Global Real-Time Geopolitical Simulator. Phase 1: The World Graph.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "tauri": "tauri",
+    "etl": "node --max-old-space-size=8192 scripts/etl/run-all.mjs",
+    "etl:download": "node scripts/etl/01-download.mjs",
+    "etl:build": "node --max-old-space-size=8192 scripts/etl/build-map.mjs",
+    "etl:sea": "node --max-old-space-size=8192 scripts/etl/build-sea.mjs",
+    "etl:res": "node scripts/etl/build-resources.mjs",
+    "etl:sov": "node scripts/etl/build-sovereignty.mjs",
+    "etl:elev": "node --max-old-space-size=8192 scripts/etl/build-elevation.mjs"
+  },
+  "dependencies": {
+    "@fontsource/cinzel": "^5.2.8",
+    "@fontsource/eb-garamond": "^5.2.7",
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/jetbrains-mono": "^5.1.0",
+    "@types/earcut": "^3.0.0",
+    "earcut": "^3.0.2",
+    "framer-motion": "^11.11.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.169.0",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.1.0",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.169.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "autoprefixer": "^10.4.20",
+    "d3-delaunay": "^6.0.4",
+    "jpeg-js": "^0.4.4",
+    "mapshaper": "^0.6.102",
+    "pngjs": "^7.0.0",
+    "polygon-clipping": "^0.15.7",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "~5.6.3",
+    "vite": "^5.4.8"
+  }
+}

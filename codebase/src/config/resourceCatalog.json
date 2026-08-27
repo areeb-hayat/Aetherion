@@ -1,0 +1,37 @@
+{
+  "$comment": "AETHERION resource catalogue — SINGLE SOURCE OF TRUTH for both the ETL generator (scripts/etl/build-resources.mjs) and the app (src/config/resources.ts). value = $M/yr per richness point. rarity = base spawn probability. terrain = spawn-weight per terrain type (agriculture defaults to 0 elsewhere, minerals to terrainDefault). lat = [min,max] |latitude| band. sea = spawn weight on EEZ sea provinces (offshore). Colors live in tokens.ts (mapViz.resources).",
+  "resources": [
+    { "id": "coal", "name": "Coal", "category": "FUEL", "value": 260, "rarity": 0.06, "terrainDefault": 0.6, "terrain": { "HILLS": 2.2, "MOUNTAINS": 1.6, "HIGHLANDS": 1.8, "FOREST": 1.3, "TAIGA": 1.2, "GRASSLAND": 1.2 } },
+    { "id": "oil", "name": "Crude Oil", "category": "FUEL", "value": 900, "rarity": 0.035, "terrainDefault": 0.7, "sea": 0.8, "terrain": { "DESERT": 2.4, "STEPPE": 1.6, "WETLAND": 1.8, "MANGROVE": 1.6, "TUNDRA": 1.5, "TAIGA": 1.2, "GRASSLAND": 1.3 } },
+    { "id": "gas", "name": "Natural Gas", "category": "FUEL", "value": 650, "rarity": 0.035, "terrainDefault": 0.7, "sea": 0.9, "terrain": { "DESERT": 2.0, "STEPPE": 1.6, "WETLAND": 1.6, "TUNDRA": 1.7, "TAIGA": 1.3, "GRASSLAND": 1.2 } },
+    { "id": "uranium", "name": "Uranium", "category": "FUEL", "value": 480, "rarity": 0.012, "terrainDefault": 0.6, "terrain": { "DESERT": 1.8, "HIGHLANDS": 1.6, "STEPPE": 1.4, "MOUNTAINS": 1.3 } },
+
+    { "id": "wheat", "name": "Wheat", "category": "AGRICULTURE", "value": 120, "rarity": 0.45, "lat": [20, 62], "terrain": { "GRASSLAND": 1.6, "STEPPE": 1.1, "HILLS": 0.8, "FOREST": 0.6 } },
+    { "id": "rice", "name": "Rice", "category": "AGRICULTURE", "value": 130, "rarity": 0.45, "lat": [0, 40], "terrain": { "WETLAND": 1.8, "SWAMP": 1.5, "MANGROVE": 1.2, "GRASSLAND": 1.1, "RAINFOREST": 0.9, "FOREST": 0.7 } },
+    { "id": "maize", "name": "Maize", "category": "AGRICULTURE", "value": 110, "rarity": 0.4, "lat": [0, 52], "terrain": { "GRASSLAND": 1.5, "SAVANNA": 1.2, "FOREST": 0.8, "HILLS": 0.8 } },
+    { "id": "livestock", "name": "Livestock", "category": "AGRICULTURE", "value": 140, "rarity": 0.5, "lat": [0, 68], "terrain": { "GRASSLAND": 1.5, "STEPPE": 1.5, "SAVANNA": 1.3, "HILLS": 1.1, "HIGHLANDS": 1.0, "ALPINE": 0.6, "TUNDRA": 0.5 } },
+    { "id": "fish", "name": "Fisheries", "category": "AGRICULTURE", "value": 150, "rarity": 0.55, "sea": 1.6, "terrain": { "MANGROVE": 1.2, "WETLAND": 0.7 } },
+    { "id": "timber", "name": "Timber", "category": "AGRICULTURE", "value": 100, "rarity": 0.5, "terrain": { "FOREST": 1.7, "TAIGA": 1.6, "RAINFOREST": 1.4, "HILLS": 0.9, "SWAMP": 0.8, "MOUNTAINS": 0.7 } },
+    { "id": "cotton", "name": "Cotton", "category": "AGRICULTURE", "value": 160, "rarity": 0.22, "lat": [8, 42], "terrain": { "STEPPE": 1.3, "SAVANNA": 1.2, "GRASSLAND": 1.1, "DESERT": 0.6 } },
+    { "id": "coffee", "name": "Coffee", "category": "AGRICULTURE", "value": 210, "rarity": 0.3, "lat": [0, 26], "terrain": { "HIGHLANDS": 1.7, "RAINFOREST": 1.3, "HILLS": 1.3, "SAVANNA": 1.1, "MOUNTAINS": 0.9 } },
+    { "id": "cocoa", "name": "Cocoa", "category": "AGRICULTURE", "value": 190, "rarity": 0.28, "lat": [0, 20], "terrain": { "RAINFOREST": 1.7, "MANGROVE": 1.1, "FOREST": 0.9 } },
+    { "id": "sugar", "name": "Sugar Cane", "category": "AGRICULTURE", "value": 90, "rarity": 0.3, "lat": [0, 32], "terrain": { "SAVANNA": 1.4, "RAINFOREST": 1.2, "GRASSLAND": 1.1, "WETLAND": 1.1 } },
+    { "id": "tea", "name": "Tea", "category": "AGRICULTURE", "value": 170, "rarity": 0.28, "lat": [0, 35], "terrain": { "HIGHLANDS": 1.6, "HILLS": 1.4, "RAINFOREST": 1.1, "MOUNTAINS": 0.9 } },
+    { "id": "rubber", "name": "Rubber", "category": "AGRICULTURE", "value": 230, "rarity": 0.25, "lat": [0, 18], "terrain": { "RAINFOREST": 1.8, "MANGROVE": 1.2 } },
+
+    { "id": "iron", "name": "Iron Ore", "category": "INDUSTRIAL", "value": 320, "rarity": 0.05, "terrainDefault": 0.7, "terrain": { "MOUNTAINS": 1.7, "HIGHLANDS": 1.6, "HILLS": 1.5, "TAIGA": 1.2, "DESERT": 1.2, "SAVANNA": 1.1 } },
+    { "id": "copper", "name": "Copper", "category": "INDUSTRIAL", "value": 420, "rarity": 0.04, "terrainDefault": 0.6, "terrain": { "MOUNTAINS": 1.8, "HIGHLANDS": 1.6, "DESERT": 1.5, "HILLS": 1.3, "ALPINE": 1.2, "STEPPE": 1.1 } },
+    { "id": "bauxite", "name": "Bauxite", "category": "INDUSTRIAL", "value": 240, "rarity": 0.03, "terrainDefault": 0.5, "lat": [0, 35], "terrain": { "RAINFOREST": 1.8, "SAVANNA": 1.5, "HILLS": 1.2, "MANGROVE": 1.2 } },
+    { "id": "nickel", "name": "Nickel", "category": "INDUSTRIAL", "value": 380, "rarity": 0.025, "terrainDefault": 0.6, "terrain": { "TAIGA": 1.6, "RAINFOREST": 1.4, "MOUNTAINS": 1.3, "HIGHLANDS": 1.2 } },
+    { "id": "zinc", "name": "Zinc", "category": "INDUSTRIAL", "value": 220, "rarity": 0.035, "terrainDefault": 0.7, "terrain": { "MOUNTAINS": 1.6, "HILLS": 1.5, "HIGHLANDS": 1.3, "TAIGA": 1.1 } },
+    { "id": "tin", "name": "Tin", "category": "INDUSTRIAL", "value": 280, "rarity": 0.025, "terrainDefault": 0.6, "terrain": { "RAINFOREST": 1.5, "HILLS": 1.4, "MOUNTAINS": 1.3, "HIGHLANDS": 1.2 } },
+    { "id": "phosphate", "name": "Phosphate", "category": "INDUSTRIAL", "value": 200, "rarity": 0.03, "terrainDefault": 0.5, "terrain": { "DESERT": 1.8, "STEPPE": 1.3, "SAVANNA": 1.1, "GRASSLAND": 1.0 } },
+
+    { "id": "gold", "name": "Gold", "category": "STRATEGIC", "value": 620, "rarity": 0.02, "terrainDefault": 0.6, "terrain": { "MOUNTAINS": 1.8, "HIGHLANDS": 1.5, "HILLS": 1.3, "DESERT": 1.2, "ALPINE": 1.2, "TAIGA": 1.1, "RAINFOREST": 1.0 } },
+    { "id": "gems", "name": "Gemstones", "category": "STRATEGIC", "value": 540, "rarity": 0.012, "terrainDefault": 0.5, "terrain": { "MOUNTAINS": 1.6, "HIGHLANDS": 1.5, "RAINFOREST": 1.2, "ALPINE": 1.1, "SAVANNA": 1.0 } },
+    { "id": "rare_earths", "name": "Rare Earths", "category": "STRATEGIC", "value": 700, "rarity": 0.01, "terrainDefault": 0.6, "terrain": { "HIGHLANDS": 1.5, "MOUNTAINS": 1.4, "DESERT": 1.3, "STEPPE": 1.2 } },
+    { "id": "lithium", "name": "Lithium", "category": "STRATEGIC", "value": 560, "rarity": 0.012, "terrainDefault": 0.4, "terrain": { "DESERT": 2.0, "STEPPE": 1.5, "HIGHLANDS": 1.4, "ALPINE": 1.4 } },
+    { "id": "cobalt", "name": "Cobalt", "category": "STRATEGIC", "value": 520, "rarity": 0.012, "terrainDefault": 0.5, "terrain": { "SAVANNA": 1.4, "RAINFOREST": 1.3, "HIGHLANDS": 1.3, "MOUNTAINS": 1.2 } },
+    { "id": "titanium", "name": "Titanium", "category": "STRATEGIC", "value": 400, "rarity": 0.018, "terrainDefault": 0.6, "terrain": { "MOUNTAINS": 1.4, "HIGHLANDS": 1.3, "MANGROVE": 1.2, "SAVANNA": 1.1 } }
+  ]
+}

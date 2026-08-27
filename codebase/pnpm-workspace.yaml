@@ -1,0 +1,7 @@
+# pnpm 11+ reads native build-script approval from here (no longer package.json).
+# esbuild (Vite's bundler) needs its install script to run. The ETL uses a
+# pure-JS rasterizer + PNG encoder, so no native canvas build is required.
+allowBuilds:
+  esbuild: true
+  better-sqlite3: false
+  msgpackr-extract: false

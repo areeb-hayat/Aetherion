@@ -1,0 +1,4 @@
+pnpm dev
+
+
+npm i animejs

@@ -1,0 +1,785 @@
+{
+  "$comment": "AETHERION — real-world macro seeds, SINGLE SOURCE OF TRUTH for nation economic differentiation. Keyed by ISO-A3 (nation.id). pc = approximate nominal GDP per capita in USD (2019-era); g = government archetype (drives tax capacity + stability in config/economy.ts). Income group (H/UM/LM/L) is DERIVED from pc (World Bank thresholds) so it never drifts. Nations absent from this table fall back to the regional/default model in sim/economy.ts. Edit here to retune realism — nothing else needs to change.",
+  "nations": {
+    "USA": {
+      "pc": 65100,
+      "g": "Federal Republic"
+    },
+    "CHN": {
+      "pc": 10200,
+      "g": "One-Party State"
+    },
+    "JPN": {
+      "pc": 40100,
+      "g": "Parliamentary Democracy"
+    },
+    "DEU": {
+      "pc": 46700,
+      "g": "Federal Republic"
+    },
+    "IND": {
+      "pc": 2100,
+      "g": "Federal Republic"
+    },
+    "GBR": {
+      "pc": 42300,
+      "g": "Constitutional Monarchy"
+    },
+    "FRA": {
+      "pc": 40400,
+      "g": "Semi-Presidential Republic"
+    },
+    "ITA": {
+      "pc": 33200,
+      "g": "Parliamentary Republic"
+    },
+    "BRA": {
+      "pc": 8900,
+      "g": "Federal Republic"
+    },
+    "CAN": {
+      "pc": 46300,
+      "g": "Constitutional Monarchy"
+    },
+    "RUS": {
+      "pc": 11600,
+      "g": "Authoritarian"
+    },
+    "KOR": {
+      "pc": 31800,
+      "g": "Presidential Republic"
+    },
+    "AUS": {
+      "pc": 54900,
+      "g": "Constitutional Monarchy"
+    },
+    "ESP": {
+      "pc": 29600,
+      "g": "Constitutional Monarchy"
+    },
+    "MEX": {
+      "pc": 9900,
+      "g": "Federal Republic"
+    },
+    "IDN": {
+      "pc": 4100,
+      "g": "Presidential Republic"
+    },
+    "NLD": {
+      "pc": 52300,
+      "g": "Constitutional Monarchy"
+    },
+    "SAU": {
+      "pc": 23100,
+      "g": "Absolute Monarchy"
+    },
+    "TUR": {
+      "pc": 9100,
+      "g": "Presidential Republic"
+    },
+    "CHE": {
+      "pc": 81900,
+      "g": "Federal Republic"
+    },
+    "POL": {
+      "pc": 15600,
+      "g": "Parliamentary Republic"
+    },
+    "THA": {
+      "pc": 7800,
+      "g": "Constitutional Monarchy"
+    },
+    "SWE": {
+      "pc": 51600,
+      "g": "Constitutional Monarchy"
+    },
+    "BEL": {
+      "pc": 46100,
+      "g": "Constitutional Monarchy"
+    },
+    "ARG": {
+      "pc": 9900,
+      "g": "Federal Republic"
+    },
+    "NOR": {
+      "pc": 75400,
+      "g": "Constitutional Monarchy"
+    },
+    "AUT": {
+      "pc": 50100,
+      "g": "Federal Republic"
+    },
+    "ARE": {
+      "pc": 43100,
+      "g": "Absolute Monarchy"
+    },
+    "NGA": {
+      "pc": 2200,
+      "g": "Federal Republic"
+    },
+    "ISR": {
+      "pc": 43600,
+      "g": "Parliamentary Democracy"
+    },
+    "IRL": {
+      "pc": 78700,
+      "g": "Parliamentary Republic"
+    },
+    "ZAF": {
+      "pc": 6000,
+      "g": "Parliamentary Republic"
+    },
+    "DNK": {
+      "pc": 59800,
+      "g": "Constitutional Monarchy"
+    },
+    "SGP": {
+      "pc": 65200,
+      "g": "Parliamentary Republic"
+    },
+    "MYS": {
+      "pc": 11400,
+      "g": "Constitutional Monarchy"
+    },
+    "PHL": {
+      "pc": 3500,
+      "g": "Presidential Republic"
+    },
+    "EGY": {
+      "pc": 3000,
+      "g": "Presidential Republic"
+    },
+    "VNM": {
+      "pc": 3400,
+      "g": "One-Party State"
+    },
+    "BGD": {
+      "pc": 1900,
+      "g": "Parliamentary Republic"
+    },
+    "CHL": {
+      "pc": 14900,
+      "g": "Presidential Republic"
+    },
+    "FIN": {
+      "pc": 48700,
+      "g": "Parliamentary Republic"
+    },
+    "PAK": {
+      "pc": 1450,
+      "g": "Federal Republic"
+    },
+    "COL": {
+      "pc": 6400,
+      "g": "Presidential Republic"
+    },
+    "ROU": {
+      "pc": 12900,
+      "g": "Semi-Presidential Republic"
+    },
+    "CZE": {
+      "pc": 23500,
+      "g": "Parliamentary Republic"
+    },
+    "PRT": {
+      "pc": 23300,
+      "g": "Semi-Presidential Republic"
+    },
+    "IRQ": {
+      "pc": 5700,
+      "g": "Parliamentary Republic"
+    },
+    "PER": {
+      "pc": 6900,
+      "g": "Presidential Republic"
+    },
+    "GRC": {
+      "pc": 19100,
+      "g": "Parliamentary Republic"
+    },
+    "NZL": {
+      "pc": 42100,
+      "g": "Constitutional Monarchy"
+    },
+    "QAT": {
+      "pc": 62100,
+      "g": "Absolute Monarchy"
+    },
+    "DZA": {
+      "pc": 4000,
+      "g": "Presidential Republic"
+    },
+    "KAZ": {
+      "pc": 9800,
+      "g": "Authoritarian"
+    },
+    "HUN": {
+      "pc": 16500,
+      "g": "Parliamentary Republic"
+    },
+    "KWT": {
+      "pc": 32000,
+      "g": "Constitutional Monarchy"
+    },
+    "MAR": {
+      "pc": 3200,
+      "g": "Constitutional Monarchy"
+    },
+    "ECU": {
+      "pc": 6200,
+      "g": "Presidential Republic"
+    },
+    "ETH": {
+      "pc": 850,
+      "g": "Federal Republic"
+    },
+    "KEN": {
+      "pc": 1800,
+      "g": "Presidential Republic"
+    },
+    "AGO": {
+      "pc": 2800,
+      "g": "Presidential Republic"
+    },
+    "OMN": {
+      "pc": 15300,
+      "g": "Absolute Monarchy"
+    },
+    "GTM": {
+      "pc": 4500,
+      "g": "Presidential Republic"
+    },
+    "BGR": {
+      "pc": 9800,
+      "g": "Parliamentary Republic"
+    },
+    "LKA": {
+      "pc": 3900,
+      "g": "Presidential Republic"
+    },
+    "TZA": {
+      "pc": 1100,
+      "g": "Presidential Republic"
+    },
+    "GHA": {
+      "pc": 2200,
+      "g": "Presidential Republic"
+    },
+    "LUX": {
+      "pc": 114700,
+      "g": "Constitutional Monarchy"
+    },
+    "TKM": {
+      "pc": 7600,
+      "g": "Authoritarian"
+    },
+    "UZB": {
+      "pc": 1700,
+      "g": "Authoritarian"
+    },
+    "MMR": {
+      "pc": 1400,
+      "g": "Transitional"
+    },
+    "TUN": {
+      "pc": 3300,
+      "g": "Parliamentary Republic"
+    },
+    "JOR": {
+      "pc": 4400,
+      "g": "Constitutional Monarchy"
+    },
+    "BOL": {
+      "pc": 3500,
+      "g": "Presidential Republic"
+    },
+    "CIV": {
+      "pc": 2300,
+      "g": "Presidential Republic"
+    },
+    "PRY": {
+      "pc": 5400,
+      "g": "Presidential Republic"
+    },
+    "CMR": {
+      "pc": 1500,
+      "g": "Presidential Republic"
+    },
+    "UGA": {
+      "pc": 780,
+      "g": "Presidential Republic"
+    },
+    "ZMB": {
+      "pc": 1300,
+      "g": "Presidential Republic"
+    },
+    "SEN": {
+      "pc": 1450,
+      "g": "Presidential Republic"
+    },
+    "ZWE": {
+      "pc": 1400,
+      "g": "Presidential Republic"
+    },
+    "SDN": {
+      "pc": 700,
+      "g": "Transitional"
+    },
+    "VEN": {
+      "pc": 2500,
+      "g": "Authoritarian"
+    },
+    "HRV": {
+      "pc": 14900,
+      "g": "Parliamentary Republic"
+    },
+    "LTU": {
+      "pc": 19200,
+      "g": "Semi-Presidential Republic"
+    },
+    "SVN": {
+      "pc": 25900,
+      "g": "Parliamentary Republic"
+    },
+    "LVA": {
+      "pc": 17800,
+      "g": "Parliamentary Republic"
+    },
+    "EST": {
+      "pc": 23300,
+      "g": "Parliamentary Republic"
+    },
+    "ISL": {
+      "pc": 66900,
+      "g": "Parliamentary Republic"
+    },
+    "PAN": {
+      "pc": 15700,
+      "g": "Presidential Republic"
+    },
+    "CRI": {
+      "pc": 12200,
+      "g": "Presidential Republic"
+    },
+    "URY": {
+      "pc": 16200,
+      "g": "Presidential Republic"
+    },
+    "HND": {
+      "pc": 2600,
+      "g": "Presidential Republic"
+    },
+    "NPL": {
+      "pc": 1100,
+      "g": "Federal Republic"
+    },
+    "KHM": {
+      "pc": 1650,
+      "g": "Constitutional Monarchy"
+    },
+    "LAO": {
+      "pc": 2600,
+      "g": "One-Party State"
+    },
+    "MOZ": {
+      "pc": 500,
+      "g": "Presidential Republic"
+    },
+    "MDG": {
+      "pc": 470,
+      "g": "Presidential Republic"
+    },
+    "MLI": {
+      "pc": 900,
+      "g": "Transitional"
+    },
+    "BFA": {
+      "pc": 830,
+      "g": "Transitional"
+    },
+    "NER": {
+      "pc": 550,
+      "g": "Presidential Republic"
+    },
+    "TCD": {
+      "pc": 700,
+      "g": "Presidential Republic"
+    },
+    "COD": {
+      "pc": 550,
+      "g": "Presidential Republic"
+    },
+    "SSD": {
+      "pc": 300,
+      "g": "Transitional"
+    },
+    "YEM": {
+      "pc": 800,
+      "g": "Transitional"
+    },
+    "SYR": {
+      "pc": 900,
+      "g": "Authoritarian"
+    },
+    "AFG": {
+      "pc": 500,
+      "g": "Transitional"
+    },
+    "PRK": {
+      "pc": 640,
+      "g": "One-Party State"
+    },
+    "MNG": {
+      "pc": 4200,
+      "g": "Semi-Presidential Republic"
+    },
+    "GEO": {
+      "pc": 4700,
+      "g": "Parliamentary Republic"
+    },
+    "ARM": {
+      "pc": 4600,
+      "g": "Parliamentary Republic"
+    },
+    "AZE": {
+      "pc": 4800,
+      "g": "Authoritarian"
+    },
+    "ALB": {
+      "pc": 5400,
+      "g": "Parliamentary Republic"
+    },
+    "MKD": {
+      "pc": 6100,
+      "g": "Parliamentary Republic"
+    },
+    "SRB": {
+      "pc": 7400,
+      "g": "Parliamentary Republic"
+    },
+    "BIH": {
+      "pc": 6100,
+      "g": "Parliamentary Republic"
+    },
+    "MDA": {
+      "pc": 4500,
+      "g": "Parliamentary Republic"
+    },
+    "BLR": {
+      "pc": 6800,
+      "g": "Authoritarian"
+    },
+    "BWA": {
+      "pc": 7900,
+      "g": "Parliamentary Republic"
+    },
+    "NAM": {
+      "pc": 5000,
+      "g": "Presidential Republic"
+    },
+    "GAB": {
+      "pc": 7800,
+      "g": "Presidential Republic"
+    },
+    "MRT": {
+      "pc": 1700,
+      "g": "Presidential Republic"
+    },
+    "HTI": {
+      "pc": 1200,
+      "g": "Presidential Republic"
+    },
+    "JAM": {
+      "pc": 5600,
+      "g": "Constitutional Monarchy"
+    },
+    "TTO": {
+      "pc": 17400,
+      "g": "Parliamentary Republic"
+    },
+    "BHR": {
+      "pc": 24000,
+      "g": "Constitutional Monarchy"
+    },
+    "BRN": {
+      "pc": 31000,
+      "g": "Absolute Monarchy"
+    },
+    "CYP": {
+      "pc": 27700,
+      "g": "Presidential Republic"
+    },
+    "MLT": {
+      "pc": 30000,
+      "g": "Parliamentary Republic"
+    },
+    "FJI": {
+      "pc": 6200,
+      "g": "Parliamentary Republic"
+    },
+    "PNG": {
+      "pc": 2800,
+      "g": "Constitutional Monarchy"
+    },
+    "SLV": {
+      "pc": 4200,
+      "g": "Presidential Republic"
+    },
+    "NIC": {
+      "pc": 2000,
+      "g": "Presidential Republic"
+    },
+    "DOM": {
+      "pc": 8300,
+      "g": "Presidential Republic"
+    },
+    "CUB": {
+      "pc": 9500,
+      "g": "One-Party State"
+    },
+    "BLZ": {
+      "pc": 4900,
+      "g": "Constitutional Monarchy"
+    },
+    "GUY": {
+      "pc": 6600,
+      "g": "Presidential Republic"
+    },
+    "SUR": {
+      "pc": 6800,
+      "g": "Presidential Republic"
+    },
+    "LBY": {
+      "pc": 7700,
+      "g": "Transitional"
+    },
+    "LBN": {
+      "pc": 7600,
+      "g": "Parliamentary Republic"
+    },
+    "IRN": {
+      "pc": 5500,
+      "g": "Theocracy"
+    },
+    "UKR": {
+      "pc": 3700,
+      "g": "Semi-Presidential Republic"
+    },
+    "SVK": {
+      "pc": 19200,
+      "g": "Parliamentary Republic"
+    },
+    "RWA": {
+      "pc": 830,
+      "g": "Presidential Republic"
+    },
+    "SOM": {
+      "pc": 350,
+      "g": "Federal Republic"
+    },
+    "BEN": {
+      "pc": 1250,
+      "g": "Presidential Republic"
+    },
+    "TGO": {
+      "pc": 690,
+      "g": "Presidential Republic"
+    },
+    "GIN": {
+      "pc": 1050,
+      "g": "Presidential Republic"
+    },
+    "MWI": {
+      "pc": 410,
+      "g": "Presidential Republic"
+    },
+    "LBR": {
+      "pc": 620,
+      "g": "Presidential Republic"
+    },
+    "SLE": {
+      "pc": 540,
+      "g": "Presidential Republic"
+    },
+    "COG": {
+      "pc": 2300,
+      "g": "Presidential Republic"
+    },
+    "MDV": {
+      "pc": 10300,
+      "g": "Presidential Republic"
+    },
+    "BTN": {
+      "pc": 3400,
+      "g": "Constitutional Monarchy"
+    },
+    "BDI": {
+      "pc": 270,
+      "g": "Presidential Republic"
+    },
+    "ERI": {
+      "pc": 620,
+      "g": "Authoritarian"
+    },
+    "SWZ": {
+      "pc": 3900,
+      "g": "Absolute Monarchy"
+    },
+    "LSO": {
+      "pc": 1150,
+      "g": "Constitutional Monarchy"
+    },
+    "DJI": {
+      "pc": 3100,
+      "g": "Presidential Republic"
+    },
+    "GNB": {
+      "pc": 700,
+      "g": "Semi-Presidential Republic"
+    },
+    "GMB": {
+      "pc": 750,
+      "g": "Presidential Republic"
+    },
+    "CAF": {
+      "pc": 470,
+      "g": "Presidential Republic"
+    },
+    "GRL": {
+      "pc": 57000,
+      "g": "Parliamentary Democracy"
+    },
+    "FRO": {
+      "pc": 69000,
+      "g": "Parliamentary Democracy"
+    },
+    "HKG": {
+      "pc": 49000,
+      "g": "Hybrid Regime"
+    },
+    "MAC": {
+      "pc": 43000,
+      "g": "Hybrid Regime"
+    },
+    "PRI": {
+      "pc": 34000,
+      "g": "Presidential Republic"
+    },
+    "GUM": {
+      "pc": 37000,
+      "g": "Presidential Republic"
+    },
+    "VIR": {
+      "pc": 39000,
+      "g": "Presidential Republic"
+    },
+    "ASM": {
+      "pc": 16000,
+      "g": "Presidential Republic"
+    },
+    "MNP": {
+      "pc": 17000,
+      "g": "Presidential Republic"
+    },
+    "PYF": {
+      "pc": 20000,
+      "g": "Parliamentary Democracy"
+    },
+    "NCL": {
+      "pc": 34000,
+      "g": "Parliamentary Democracy"
+    },
+    "WLF": {
+      "pc": 13000,
+      "g": "Parliamentary Democracy"
+    },
+    "SPM": {
+      "pc": 35000,
+      "g": "Parliamentary Democracy"
+    },
+    "MAF": {
+      "pc": 22000,
+      "g": "Parliamentary Democracy"
+    },
+    "BLM": {
+      "pc": 39000,
+      "g": "Parliamentary Democracy"
+    },
+    "ABW": {
+      "pc": 31000,
+      "g": "Parliamentary Democracy"
+    },
+    "CUW": {
+      "pc": 20000,
+      "g": "Parliamentary Democracy"
+    },
+    "SXM": {
+      "pc": 29000,
+      "g": "Parliamentary Democracy"
+    },
+    "BMU": {
+      "pc": 114000,
+      "g": "Parliamentary Democracy"
+    },
+    "CYM": {
+      "pc": 92000,
+      "g": "Parliamentary Democracy"
+    },
+    "IMN": {
+      "pc": 87000,
+      "g": "Parliamentary Democracy"
+    },
+    "JEY": {
+      "pc": 57000,
+      "g": "Parliamentary Democracy"
+    },
+    "GGY": {
+      "pc": 52000,
+      "g": "Parliamentary Democracy"
+    },
+    "GIB": {
+      "pc": 92000,
+      "g": "Parliamentary Democracy"
+    },
+    "TCA": {
+      "pc": 24000,
+      "g": "Parliamentary Democracy"
+    },
+    "VGB": {
+      "pc": 34000,
+      "g": "Parliamentary Democracy"
+    },
+    "AIA": {
+      "pc": 22000,
+      "g": "Parliamentary Democracy"
+    },
+    "MSR": {
+      "pc": 13000,
+      "g": "Parliamentary Democracy"
+    },
+    "SHN": {
+      "pc": 8000,
+      "g": "Parliamentary Democracy"
+    },
+    "FLK": {
+      "pc": 70000,
+      "g": "Parliamentary Democracy"
+    },
+    "COK": {
+      "pc": 22000,
+      "g": "Parliamentary Democracy"
+    },
+    "NIU": {
+      "pc": 16000,
+      "g": "Parliamentary Democracy"
+    },
+    "ALD": {
+      "pc": 55000,
+      "g": "Parliamentary Democracy"
+    },
+    "NFK": {
+      "pc": 30000,
+      "g": "Parliamentary Democracy"
+    }
+  }
+}

@@ -1,0 +1,301 @@
+{
+  "generated": "2026-07-04T04:43:04.529Z",
+  "source": "Natural Earth 10m admin_0 (SOV_A3 / TYPE / NOTE_ADM0)",
+  "dependencyCount": 48,
+  "dependencies": {
+    "ESB": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "GIB": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Disputed",
+      "note": "U.K.",
+      "contested": true
+    },
+    "WSB": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "TCA": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "PCN": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "MSR": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "AIA": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "VGB": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "CYM": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "BMU": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "SHN": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "JEY": {
+      "sovereign": "GBR",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "U.K."
+    },
+    "GGY": {
+      "sovereign": "GBR",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "U.K."
+    },
+    "IMN": {
+      "sovereign": "GBR",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "U.K."
+    },
+    "IOT": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Disputed",
+      "note": "U.K.",
+      "contested": true
+    },
+    "SGS": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.K."
+    },
+    "FLK": {
+      "sovereign": "GBR",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Disputed",
+      "note": "U.K.",
+      "contested": true
+    },
+    "HKG": {
+      "sovereign": "CHN",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "Cn."
+    },
+    "MAC": {
+      "sovereign": "CHN",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "Cn."
+    },
+    "MAF": {
+      "sovereign": "FRA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Fr."
+    },
+    "NCL": {
+      "sovereign": "FRA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Fr."
+    },
+    "SPM": {
+      "sovereign": "FRA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Fr."
+    },
+    "PYF": {
+      "sovereign": "FRA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Fr."
+    },
+    "ATF": {
+      "sovereign": "FRA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Fr."
+    },
+    "BLM": {
+      "sovereign": "FRA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Fr."
+    },
+    "WLF": {
+      "sovereign": "FRA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Fr."
+    },
+    "CLP": {
+      "sovereign": "FRA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Fr."
+    },
+    "SXM": {
+      "sovereign": "NLD",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "Neth."
+    },
+    "CUW": {
+      "sovereign": "NLD",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "Neth."
+    },
+    "ABW": {
+      "sovereign": "NLD",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "Neth."
+    },
+    "KAB": {
+      "sovereign": "RUS",
+      "tier": "MILITARY_LEASE",
+      "kind": "Lease",
+      "note": "Russia"
+    },
+    "ALD": {
+      "sovereign": "FIN",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "Fin."
+    },
+    "GRL": {
+      "sovereign": "DNK",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Country",
+      "note": "Den."
+    },
+    "FRO": {
+      "sovereign": "DNK",
+      "tier": "CONSTITUENT_COUNTRY",
+      "kind": "Dependency",
+      "note": "Den."
+    },
+    "USG": {
+      "sovereign": "USA",
+      "tier": "MILITARY_LEASE",
+      "kind": "Lease",
+      "note": "U.S.A."
+    },
+    "UMI": {
+      "sovereign": "USA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.S.A."
+    },
+    "VIR": {
+      "sovereign": "USA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.S.A."
+    },
+    "PRI": {
+      "sovereign": "USA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.S.A."
+    },
+    "ASM": {
+      "sovereign": "USA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.S.A."
+    },
+    "GUM": {
+      "sovereign": "USA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.S.A."
+    },
+    "MNP": {
+      "sovereign": "USA",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "U.S.A."
+    },
+    "HMD": {
+      "sovereign": "AUS",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Auz."
+    },
+    "IOA": {
+      "sovereign": "AUS",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Auz."
+    },
+    "NFK": {
+      "sovereign": "AUS",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Auz."
+    },
+    "CSI": {
+      "sovereign": "AUS",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Auz."
+    },
+    "ATC": {
+      "sovereign": "AUS",
+      "tier": "OVERSEAS_TERRITORY",
+      "kind": "Dependency",
+      "note": "Auz."
+    },
+    "COK": {
+      "sovereign": "NZL",
+      "tier": "FREE_ASSOCIATION",
+      "kind": "Dependency",
+      "note": "Assoc. with N.Z."
+    },
+    "NIU": {
+      "sovereign": "NZL",
+      "tier": "FREE_ASSOCIATION",
+      "kind": "Dependency",
+      "note": "Assoc. with N.Z."
+    }
+  },
+  "contested": [
+    "PSX"
+  ]
+}

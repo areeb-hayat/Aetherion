@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+dist-ssr/
+*.local
+
+# Tauri / Rust
+src-tauri/target/
+src-tauri/gen/
+
+# ETL intermediates (large raw downloads — regenerate with `pnpm etl`)
+scripts/etl/.cache/
+
+# Generated game data is committed so the app runs without re-running ETL.
+# If you prefer to regenerate it, uncomment the next line:
+# public/data/
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.log

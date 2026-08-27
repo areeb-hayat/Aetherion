@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "tauri-apps.tauri-vscode",
+    "bradlc.vscode-tailwindcss",
+    "qwtel.sqlite-viewer"
+  ]
+}

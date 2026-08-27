@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS custom properties are injected from src/config/tokens.ts at boot
+   (see cssVars.ts). Fallback literals here keep the first paint on-brand. */
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--c-navy, #0d1b2a);
+  color: var(--c-off-white, #f0f4f8);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+  /* Hidden in favor of the custom cursor (src/features/cursor). */
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* App backdrop: a subtle vignette from deep navy to near-black "space". */
+.bg-app {
+  background:
+    radial-gradient(ellipse at 50% 40%, #11263b 0%, #0a1520 45%, #05090f 100%);
+}
+
+/* Thin, on-theme scrollbars for any scrolling surface. */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--c-steel, #1b3a5c);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* HUD panel scroll areas: the bar lives in a reserved gutter (never on top of
+   content), stays hair-thin, and only shows its thumb while you're over the
+   panel — so nothing protrudes into the plaque chrome. */
+.hud-scroll {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  padding-right: 4px;
+}
+.hud-scroll:hover {
+  scrollbar-color: var(--c-steel, #1b3a5c) transparent;
+}
+.hud-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.hud-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+}
+.hud-scroll:hover::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--c-steel, #1b3a5c) 80%, transparent);
+}
+
+/* Keep interactive cursor hidden on buttons too (custom cursor handles feel). */
+button {
+  cursor: none;
+}

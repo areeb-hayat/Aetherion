@@ -1,0 +1,132 @@
+{
+  "_comment": "Real-world alignment seeds for diplomacy baselines (sim/diplomacy.ts). Members are ISO-A3. cohesion = opinion bonus shared members feel. opposes = rival blocs (mutual suspicion). rivalries/partnerships are explicit pairwise overrides that stack on top of bloc math.",
+  "blocs": {
+    "NATO": {
+      "name": "NATO",
+      "kind": "military",
+      "cohesion": 42,
+      "opposes": ["CSTO"],
+      "members": ["USA","CAN","GBR","FRA","DEU","ITA","ESP","PRT","NLD","BEL","LUX","DNK","NOR","ISL","POL","CZE","SVK","HUN","ROU","BGR","HRV","SVN","EST","LVA","LTU","GRC","TUR","ALB","MNE","MKD","FIN","SWE"]
+    },
+    "EU": {
+      "name": "European Union",
+      "kind": "economic",
+      "cohesion": 34,
+      "opposes": [],
+      "members": ["DEU","FRA","ITA","ESP","PRT","NLD","BEL","LUX","IRL","AUT","DNK","SWE","FIN","POL","CZE","SVK","HUN","ROU","BGR","HRV","SVN","EST","LVA","LTU","GRC","CYP","MLT"]
+    },
+    "FIVE_EYES": {
+      "name": "Five Eyes",
+      "kind": "intelligence",
+      "cohesion": 52,
+      "opposes": [],
+      "members": ["USA","GBR","CAN","AUS","NZL"]
+    },
+    "GCC": {
+      "name": "Gulf Cooperation Council",
+      "kind": "economic",
+      "cohesion": 34,
+      "opposes": [],
+      "members": ["SAU","ARE","QAT","KWT","BHR","OMN"]
+    },
+    "CSTO": {
+      "name": "CSTO",
+      "kind": "military",
+      "cohesion": 38,
+      "opposes": ["NATO"],
+      "members": ["RUS","BLR","KAZ","ARM","KGZ","TJK"]
+    },
+    "ASEAN": {
+      "name": "ASEAN",
+      "kind": "economic",
+      "cohesion": 24,
+      "opposes": [],
+      "members": ["IDN","MYS","THA","VNM","PHL","SGP","MMR","KHM","LAO","BRN"]
+    },
+    "BRICS": {
+      "name": "BRICS",
+      "kind": "economic",
+      "cohesion": 18,
+      "opposes": [],
+      "members": ["BRA","RUS","IND","CHN","ZAF","IRN","EGY","ETH","ARE"]
+    },
+    "ARAB_LEAGUE": {
+      "name": "Arab League",
+      "kind": "political",
+      "cohesion": 16,
+      "opposes": [],
+      "members": ["SAU","EGY","DZA","IRQ","MAR","SDN","SYR","TUN","JOR","LBN","LBY","YEM","ARE","QAT","KWT","BHR","OMN","SOM","MRT","DJI"]
+    }
+  },
+  "rivalries": [
+    { "a": "USA", "b": "CHN", "v": -30 },
+    { "a": "USA", "b": "RUS", "v": -42 },
+    { "a": "USA", "b": "PRK", "v": -58 },
+    { "a": "USA", "b": "IRN", "v": -55 },
+    { "a": "USA", "b": "CUB", "v": -34 },
+    { "a": "USA", "b": "VEN", "v": -32 },
+    { "a": "CHN", "b": "IND", "v": -34 },
+    { "a": "CHN", "b": "JPN", "v": -26 },
+    { "a": "CHN", "b": "TWN", "v": -52 },
+    { "a": "CHN", "b": "PHL", "v": -16 },
+    { "a": "IND", "b": "PAK", "v": -60 },
+    { "a": "PAK", "b": "AFG", "v": -22 },
+    { "a": "KOR", "b": "PRK", "v": -68 },
+    { "a": "JPN", "b": "PRK", "v": -46 },
+    { "a": "JPN", "b": "KOR", "v": -12 },
+    { "a": "RUS", "b": "UKR", "v": -72 },
+    { "a": "RUS", "b": "GEO", "v": -36 },
+    { "a": "RUS", "b": "POL", "v": -34 },
+    { "a": "ISR", "b": "IRN", "v": -66 },
+    { "a": "ISR", "b": "SYR", "v": -52 },
+    { "a": "ISR", "b": "LBN", "v": -42 },
+    { "a": "ISR", "b": "PSX", "v": -62 },
+    { "a": "SAU", "b": "IRN", "v": -56 },
+    { "a": "SAU", "b": "YEM", "v": -30 },
+    { "a": "SAU", "b": "QAT", "v": -14 },
+    { "a": "TUR", "b": "GRC", "v": -34 },
+    { "a": "TUR", "b": "SYR", "v": -30 },
+    { "a": "TUR", "b": "ARM", "v": -50 },
+    { "a": "ARM", "b": "AZE", "v": -70 },
+    { "a": "ETH", "b": "ERI", "v": -44 },
+    { "a": "EGY", "b": "ETH", "v": -26 },
+    { "a": "DZA", "b": "MAR", "v": -40 },
+    { "a": "VEN", "b": "COL", "v": -26 },
+    { "a": "VEN", "b": "GUY", "v": -32 },
+    { "a": "SRB", "b": "XKX", "v": -60 },
+    { "a": "SRB", "b": "HRV", "v": -20 },
+    { "a": "THA", "b": "KHM", "v": -16 }
+  ],
+  "partnerships": [
+    { "a": "USA", "b": "GBR", "v": 30 },
+    { "a": "USA", "b": "CAN", "v": 40 },
+    { "a": "USA", "b": "ISR", "v": 46 },
+    { "a": "USA", "b": "JPN", "v": 40 },
+    { "a": "USA", "b": "KOR", "v": 40 },
+    { "a": "USA", "b": "AUS", "v": 42 },
+    { "a": "USA", "b": "MEX", "v": 20 },
+    { "a": "USA", "b": "SAU", "v": 26 },
+    { "a": "FRA", "b": "DEU", "v": 44 },
+    { "a": "RUS", "b": "CHN", "v": 36 },
+    { "a": "RUS", "b": "BLR", "v": 54 },
+    { "a": "RUS", "b": "IRN", "v": 30 },
+    { "a": "RUS", "b": "SYR", "v": 34 },
+    { "a": "RUS", "b": "IND", "v": 28 },
+    { "a": "CHN", "b": "PAK", "v": 46 },
+    { "a": "CHN", "b": "PRK", "v": 30 },
+    { "a": "CHN", "b": "IRN", "v": 24 },
+    { "a": "IND", "b": "BTN", "v": 40 },
+    { "a": "IND", "b": "BGD", "v": 24 },
+    { "a": "IND", "b": "NPL", "v": 20 },
+    { "a": "SAU", "b": "PAK", "v": 30 },
+    { "a": "SAU", "b": "EGY", "v": 30 },
+    { "a": "IRN", "b": "SYR", "v": 40 },
+    { "a": "TUR", "b": "AZE", "v": 55 },
+    { "a": "TUR", "b": "QAT", "v": 32 },
+    { "a": "TUR", "b": "PAK", "v": 34 },
+    { "a": "BRA", "b": "ARG", "v": 28 },
+    { "a": "GBR", "b": "AUS", "v": 40 },
+    { "a": "GBR", "b": "CAN", "v": 40 },
+    { "a": "GBR", "b": "NZL", "v": 38 }
+  ]
+}
