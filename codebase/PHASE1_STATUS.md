@@ -224,6 +224,24 @@ compressed inside, and refreshes the copy at the repo root that the desktop
 shortcut points at. `tauri.conf.json` had a `comment` key inside `app.security`
 that the v2 schema rejects — the build could not start until it went.
 
+## DONE (2026-08-27) — the commodity market
+`src/sim/market.ts`: every commodity's price is a function of the campaign
+date — `(1 + scarcity)^t x (1 + amp.sin(wt + phase))`, per-commodity period and
+phase, bounded 0.45x–3.2x, closed-form like the growth model. Royalties are
+levied at today's prices, and the TERMS OF TRADE swing every nation's output by
+its net position (a fuel slump costs Russia ~6% of GDP and hands importers
++0.4%), capped both ways. Exports and imports are put on one scale by the
+identity that defines a market — the world's sales equal its purchases
+(`marketScale()`) — rather than by an invented constant; the catalogue `value`
+is an inflated index and comparing it to real GDP directly made Russia's
+exports twice its own economy. Day one is unchanged by construction (priced
+output equals the baked figure to zero drift), which is what protects the
+opening numbers validated against the real world. Statecraft > Budget shows the
+board and your terms of trade. **Ceiling** (`ponytail:` comment in market.ts):
+royalties keep the old `RESOURCE.gvaScale` because the ETL's resource index
+tracks province AREA rather than real extraction, so the market's bite on a
+petrostate's BUDGET is understated until build-resources.mjs re-derives it.
+
 ## NEXT
 Naval movement, river names on hover, seasonal terrain. UI/HUD polish pass (the
 map is now "alive"; the surrounding panels/frame are the next elegance target).
