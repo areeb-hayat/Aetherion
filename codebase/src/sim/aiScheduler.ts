@@ -21,7 +21,8 @@
 import { useWorldStore } from '@/store/worldStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { usePoliticsStore } from '@/store/politicsStore';
-import { useDiplomacyStore } from '@/store/diplomacyStore';
+import { useDiplomacyStore, playerActor } from '@/store/diplomacyStore';
+import { ACTING_POWERS, chooseMove } from '@/sim/aiForeignPolicy';
 import { useEconomyStore } from '@/store/economyStore';
 import { isInsurgencyLevel } from '@/sim/unrest';
 import { WAR } from '@/config/diplomacy';
@@ -30,18 +31,24 @@ import { WAR } from '@/config/diplomacy';
 const BUDGET = {
   globalUnrestScan: 400, // rotating window over all land provinces
   playerUnrestScan: 800, // cap on the player's own provinces per day
+  /** Powers that take a foreign-policy decision each game-day. At four a day
+   *  the ~110 acting powers each think about once a month, which is the pace
+   *  diplomacy moves at anyway — and it keeps the daily pass under a
+   *  millisecond. */
+  foreignPolicy: 4,
 } as const;
 
 let lastHours = -1;
 let dayAccum = 0;
 let cursor = 0; // rotating index into the land-province list
+let thinkCursor = 0; // rotating index into the acting powers
 let landIds: number[] = [];
 let landIdsKey = -1;
 let playerIds: number[] = [];
 let playerKey = '';
 
 /** Dev-visible counters (window.__aiSched) proving the budget holds. */
-const stats = { days: 0, scanned: 0, insurgencies: 0, decayed: 0, lastBatchMs: 0 };
+const stats = { days: 0, scanned: 0, insurgencies: 0, decayed: 0, moves: 0, lastBatchMs: 0 };
 if (import.meta.env.DEV) (window as unknown as { __aiSched: typeof stats }).__aiSched = stats;
 
 function landProvinceIds(): number[] {
@@ -117,9 +124,19 @@ function dailyPass() {
     stats.decayed = keys.length;
   }
 
-  // 4. (LOD slot) — per-nation decision AI plugs in here with the military
-  //    system: great powers + the player's counterparties think weekly, the
-  //    long tail drifts. Deliberately empty in this phase.
+  // 4. The world conducts its own foreign policy: a rotating handful of the
+  //    powers named in blocs.json each take at most one action from the same
+  //    catalogue the player uses (sim/aiForeignPolicy). War is not on their
+  //    menu until there is a military system to resolve one.
+  const player = playerActor();
+  for (let i = 0; i < BUDGET.foreignPolicy && ACTING_POWERS.length > 0; i++) {
+    const actor = ACTING_POWERS[(thinkCursor + i) % ACTING_POWERS.length];
+    const move = chooseMove(actor, stats.days, player);
+    if (!move) continue;
+    useDiplomacyStore.getState().aiAct(move.actor, move.target, move.action.id, move.motive);
+    stats.moves++;
+  }
+  thinkCursor = ACTING_POWERS.length ? (thinkCursor + BUDGET.foreignPolicy) % ACTING_POWERS.length : 0;
 
   stats.lastBatchMs = performance.now() - t0;
 }
@@ -128,6 +145,7 @@ function dailyPass() {
 export function initAiScheduler(gameHours: number) {
   lastHours = gameHours;
   dayAccum = 0;
+  thinkCursor = 0;
 }
 
 /** Advance the world sim; called by the engine on every worker snapshot. Cheap

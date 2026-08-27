@@ -16,6 +16,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import {
   ACTION_BY_ID,
+  type ActionDef,
   TREATY_LABEL,
   SANCTION_LABEL,
   type TreatyType,
@@ -77,6 +78,10 @@ interface DiplomacyState {
   hasCasusBelli: (a: string, b: string) => boolean;
   availability: (actionId: string, target: string) => Availability;
   act: (actionId: string, target: string) => ActResult;
+  /** The AI scheduler's entry point: an acting power moves. Same effects and
+   *  cooldowns as the player's `act`, no treasury (AI treasuries aren't
+   *  modelled) and a dispatch only when the player is on the receiving end. */
+  aiAct: (actor: string, target: string, actionId: string, motive?: string) => void;
   addCasusBelli: (a: string, b: string, reason: string) => void;
   applyDelta: (a: string, b: string, v: number) => void;
   /** The WORLD reacts to an outrage: every other sovereign's opinion of
@@ -104,6 +109,57 @@ function notify(severity: Severity, headline: string, detail?: string) {
     headline,
     detail,
   });
+}
+
+/** Apply one action's effects to the sparse relationship state. The single
+ *  place the world's diplomacy actually changes — the player's `act` and the
+ *  AI's `aiAct` share it, so a denunciation means the same thing whoever makes
+ *  it. Pure: it derives the next state from the current one. */
+function applyEffects(
+  s: DiplomacyState,
+  def: ActionDef,
+  actor: string,
+  them: string,
+  now: number,
+): Partial<DiplomacyState> {
+  const pk = pairKey(actor, them);
+  const dk = dirKey(actor, them);
+  const deltas = { ...s.deltas };
+  const e = def.effect;
+  if (e.opinionSelf) deltas[dirKey(actor, them)] = (deltas[dirKey(actor, them)] ?? 0) + e.opinionSelf;
+  if (e.opinionThem) deltas[dirKey(them, actor)] = (deltas[dirKey(them, actor)] ?? 0) + e.opinionThem;
+
+  const treaties = { ...s.treaties };
+  let list = treaties[pk] ?? [];
+  if (e.addTreaty && !list.includes(e.addTreaty)) list = [...list, e.addTreaty];
+  if (e.removeTreaty) list = list.filter((t) => t !== e.removeTreaty);
+  if (e.war) list = []; // war voids every treaty
+  if (list.length) treaties[pk] = list;
+  else delete treaties[pk];
+
+  const sanctions = { ...s.sanctions };
+  let mine = sanctions[dk] ?? [];
+  if (e.addSanction && !mine.includes(e.addSanction)) mine = [...mine, e.addSanction];
+  if (e.removeSanction) mine = mine.filter((x) => x !== e.removeSanction);
+  if (mine.length) sanctions[dk] = mine;
+  else delete sanctions[dk];
+
+  const severed = { ...s.severed };
+  if (e.sever) severed[pk] = true;
+  if (e.restore) delete severed[pk];
+
+  const wars = { ...s.wars };
+  const casusBelli = { ...s.casusBelli };
+  if (e.war) {
+    wars[pk] = true;
+    // An unprovoked-feeling attack hands THEM a standing justification.
+    casusBelli[dirKey(them, actor)] = 'War of aggression against them';
+  }
+
+  const cooldowns = { ...s.cooldowns };
+  if (def.cooldownDays > 0) cooldowns[`${dk}:${def.id}`] = now + def.cooldownDays * 24;
+
+  return { deltas, treaties, sanctions, severed, wars, casusBelli, cooldowns, rev: s.rev + 1 };
 }
 
 export const useDiplomacyStore = create<DiplomacyState>()(
@@ -219,50 +275,11 @@ export const useDiplomacyStore = create<DiplomacyState>()(
         const pid = useSessionStore.getState().playerNation!;
         const actor = effectiveForeignPolicyNation(pid);
         const them = effectiveForeignPolicyNation(target);
-        const pk = pairKey(actor, them);
-        const dk = dirKey(actor, them);
         const now = useSimStore.getState().gameHours;
 
         if (avail.cost > 0) spendTreasury(avail.cost);
 
-        set((s) => {
-          const deltas = { ...s.deltas };
-          const e = def.effect;
-          if (e.opinionSelf) deltas[dirKey(actor, them)] = (deltas[dirKey(actor, them)] ?? 0) + e.opinionSelf;
-          if (e.opinionThem) deltas[dirKey(them, actor)] = (deltas[dirKey(them, actor)] ?? 0) + e.opinionThem;
-
-          const treaties = { ...s.treaties };
-          let list = treaties[pk] ?? [];
-          if (e.addTreaty && !list.includes(e.addTreaty)) list = [...list, e.addTreaty];
-          if (e.removeTreaty) list = list.filter((t) => t !== e.removeTreaty);
-          if (e.war) list = []; // war voids every treaty
-          if (list.length) treaties[pk] = list;
-          else delete treaties[pk];
-
-          const sanctions = { ...s.sanctions };
-          let mine = sanctions[dk] ?? [];
-          if (e.addSanction && !mine.includes(e.addSanction)) mine = [...mine, e.addSanction];
-          if (e.removeSanction) mine = mine.filter((x) => x !== e.removeSanction);
-          if (mine.length) sanctions[dk] = mine;
-          else delete sanctions[dk];
-
-          const severed = { ...s.severed };
-          if (e.sever) severed[pk] = true;
-          if (e.restore) delete severed[pk];
-
-          const wars = { ...s.wars };
-          const casusBelli = { ...s.casusBelli };
-          if (e.war) {
-            wars[pk] = true;
-            // An unprovoked-feeling attack hands THEM a standing justification.
-            casusBelli[dirKey(them, actor)] = 'War of aggression against them';
-          }
-
-          const cooldowns = { ...s.cooldowns };
-          if (def.cooldownDays > 0) cooldowns[`${dk}:${actionId}`] = now + def.cooldownDays * 24;
-
-          return { deltas, treaties, sanctions, severed, wars, casusBelli, cooldowns, rev: s.rev + 1 };
-        });
+        set((s) => applyEffects(s, def, actor, them, now));
 
         const themName = nationName(them);
         const sev: Severity = def.effect.war ? 'CRITICAL' : def.kind === 'negative' ? 'HIGH' : 'INFO';
@@ -272,6 +289,36 @@ export const useDiplomacyStore = create<DiplomacyState>()(
           def.effect.war ? 'Treaties voided. The world watches in alarm.' : def.blurb,
         );
         return { ok: true };
+      },
+
+      aiAct: (actor, target, actionId, motive) => {
+        const def = ACTION_BY_ID.get(actionId);
+        if (!def || def.effect.war) return; // the AI does not start wars it cannot fight
+        const a = effectiveForeignPolicyNation(actor);
+        const b = effectiveForeignPolicyNation(target);
+        if (a === b) return;
+        const now = useSimStore.getState().gameHours;
+        set((s) => applyEffects(s, def, a, b, now));
+
+        // The world is busy everywhere. What is aimed AT the player is news;
+        // between two other powers, only the structural moves are — an alliance
+        // or economic warfare, not every trade deal and warm word.
+        const pid = useSessionStore.getState().playerNation;
+        const me = pid ? effectiveForeignPolicyNation(pid) : null;
+        if (me === b) {
+          const sev: Severity = def.kind === 'negative' ? 'HIGH' : 'INFO';
+          notify(sev, `${nationName(a)}: ${def.label}`, motive ? `${nationName(a)} is ${motive}.` : def.blurb);
+          return;
+        }
+        const structural = def.effect.addTreaty === 'ALLIANCE' || !!def.effect.addSanction || !!def.effect.sever;
+        if (!structural || me === a) return;
+        notify(
+          'LOW',
+          def.effect.addTreaty === 'ALLIANCE'
+            ? `${nationName(a)} and ${nationName(b)} conclude an alliance`
+            : `${nationName(a)} moves against ${nationName(b)} — ${def.label}`,
+          'Reported from the world desk. It does not concern you directly — yet.',
+        );
       },
 
       addCasusBelli: (a, b, reason) =>
