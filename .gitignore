@@ -1,1 +1,4 @@
 .claude/settings.local.json
+
+# The installed desktop app (built with `pnpm desktop` in codebase/).
+Aetherion.exe

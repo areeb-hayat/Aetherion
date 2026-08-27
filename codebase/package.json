@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "tauri": "tauri",
+    "desktop": "tauri build --no-bundle && node -e \"require('fs').copyFileSync('src-tauri/target/release/aetherion.exe','../Aetherion.exe')\"",
     "etl": "node --max-old-space-size=8192 scripts/etl/run-all.mjs",
     "etl:download": "node scripts/etl/01-download.mjs",
     "etl:build": "node --max-old-space-size=8192 scripts/etl/build-map.mjs",

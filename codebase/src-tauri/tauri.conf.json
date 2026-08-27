@@ -23,7 +23,6 @@
     ],
     "security": {
       "csp": null,
-      "comment": "COOP/COEP make the webview cross-origin isolated so the simulation's SharedArrayBuffer works in the desktop build, exactly like the Vite dev server.",
       "headers": {
         "Cross-Origin-Opener-Policy": "same-origin",
         "Cross-Origin-Embedder-Policy": "require-corp"
