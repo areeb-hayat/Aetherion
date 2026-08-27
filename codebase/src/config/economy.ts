@@ -117,6 +117,50 @@ export const TRADE = {
   reductionCap: 0.6,
 } as const;
 
+/* ---- Growth: how national economies move over a campaign ----------------- */
+
+/** The world is not frozen. Every nation's per-capita output moves along a
+ *  trend set by its own starting position (poor economies converge upward
+ *  faster than rich ones — the standard growth result), modulated by a
+ *  business cycle whose period differs per nation so the world does not boom
+ *  and slump in lockstep. Strain (war, sanctions, insurgency) drags the path
+ *  down and leaves a scar that heals slowly once the strain lifts. */
+export const GROWTH = {
+  /** Trend real growth = floor + convergence·(1 − dev). A developed economy
+   *  trends ~1.4%/yr; a low-income one catches up faster. */
+  floor: 0.012,
+  convergence: 0.035,
+  /** Institutional quality modulates the trend: rate ×= 1 + govSlope·(capacity
+   *  − 1), reading the same archetype table the tax take uses as state
+   *  effectiveness. At 1.0 the penalty is severe by design — convergence is
+   *  CONDITIONAL on institutions, which is why failed states do not quietly
+   *  compound their way to prosperity while nobody is looking at them. */
+  govSlope: 1.0,
+  /** Deterministic per-nation spread on the trend (±), stable across reloads. */
+  jitter: 0.008,
+  /** Business cycle around the trend. Less-developed economies swing wider
+   *  (commodity prices, capital flight); the period varies per nation. */
+  cycleBase: 0.012,
+  cycleDevSlope: 0.03,
+  cyclePeriod: { min: 5, max: 11 }, // years, per nation
+  /** A single sine is a metronome — thirty years in, a player can set their
+   *  watch by the recession. A second harmonic on an incommensurate period
+   *  makes the sequence aperiodic: booms and slumps still come, but never on
+   *  schedule. Ratio deliberately irrational-ish so the two never re-align. */
+  harmonic: { amp: 0.45, periodRatio: 0.41 },
+  /** Annual drag while the state is under strain — compounded daily onto the
+   *  scar. War is ruinous, sanctions bite, each held province bleeds a little. */
+  drag: { war: 0.09, sanction: 0.035, insurgency: 0.006, max: 0.25 },
+  /** Share of the shortfall recovered per year once the strain lifts — the
+   *  post-war rebound, which is real and fast (a wrecked economy rebuilding
+   *  grows quicker than a whole one). Half the gap closes in ~6 years; still
+   *  slower than a ruinous decade takes to open it. */
+  recovery: 0.12,
+  /** However ruinous the decade, the economy keeps this share of its trend
+   *  path: a state in collapse still has an economy. */
+  scarFloor: 0.55,
+} as const;
+
 /* ---- Local price level (construction & upkeep cost deflator) -------------- */
 
 export const PRICE = {

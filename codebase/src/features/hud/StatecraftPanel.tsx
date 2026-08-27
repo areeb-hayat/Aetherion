@@ -27,6 +27,7 @@ import { nationLedger } from '@/sim/nationLedger';
 import { INCOME_LABEL, TRADE, YEAR_HOURS } from '@/config/economy';
 import { IMF, BILATERAL, BOND } from '@/config/finance';
 import { imfEligible } from '@/sim/finance';
+import { growthRate, yearsElapsed } from '@/sim/growth';
 import { TREATY_LABEL, SANCTION_LABEL } from '@/config/diplomacy';
 import { POLITICS, AUTONOMY } from '@/config/autonomy';
 import { stance } from '@/sim/diplomacy';
@@ -91,9 +92,15 @@ function SectionTitle({ children, right }: { children: React.ReactNode; right?: 
 
 /* ---- tabs ---------------------------------------------------------------- */
 
-function Overview({ ledger, stat, treasury }: { ledger: NationLedger; stat: ReturnType<typeof getNationStat>; treasury: number }) {
+function Overview({ ledger, treasury }: { ledger: NationLedger; treasury: number }) {
   const monthly = ledger.balance / 12;
   const playerNation = useSessionStore((s) => s.playerNation);
+  const growth = useEconomyStore((s) => s.growth);
+  const gameHours = useSimStore((s) => s.gameHours);
+  // Before the first daily advance (a fresh, still-paused campaign) the stored
+  // rate is not yet meaningful — read the path directly.
+  const rate =
+    growth.lastTick > 0 || !playerNation ? growth.rate : growthRate(playerNation, yearsElapsed(gameHours));
   const rev = useDiplomacyStore((s) => s.rev);
   const politicsRev = usePoliticsStore((s) => s.rev);
 
@@ -126,7 +133,12 @@ function Overview({ ledger, stat, treasury }: { ledger: NationLedger; stat: Retu
         <Cell label="Population" value={compact(ledger.population)} accent={color.codeBlue} />
         <Cell label="Credit" value={`${ledger.creditRating} · ${pct(ledger.interestRate, 1)}`} title="Sovereign credit rating and its borrowing rate" />
         <Cell label="Debt / GDP" value={pct(ledger.debtToGdp)} />
-        <Cell label="Provinces" value={String(stat?.provinceCount ?? 0)} />
+        <Cell
+          label="Growth / yr"
+          value={`${rate >= 0 ? '▲' : '▼'} ${pct(Math.abs(rate), 1)}`}
+          accent={balanceColor(rate)}
+          title="Real growth this year: the economy's long-run trend and where it sits in its cycle, less the cost of any war, sanctions or separatist control"
+        />
       </div>
 
       <SectionTitle>Standing</SectionTitle>
@@ -812,7 +824,7 @@ export function StatecraftPanel() {
       </div>
 
       <div className="hud-scroll max-h-[48vh]">
-        {tab === 'overview' && <Overview ledger={ledger} stat={stat} treasury={treasury} />}
+        {tab === 'overview' && <Overview ledger={ledger} treasury={treasury} />}
         {tab === 'budget' && <Budget ledger={ledger} playerNation={playerNation} />}
         {tab === 'forces' && <Forces ledger={ledger} />}
         {tab === 'relations' && <Relations />}

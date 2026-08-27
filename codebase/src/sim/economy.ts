@@ -175,9 +175,19 @@ export function computeLedger(input: LedgerInput, mods: LedgerMods = {}): Nation
 
 /** Realistic economic output for a single province ($/yr): its share of the
  *  national economy (population × the nation's per-capita) plus its own scaled
- *  extractive output. Used by the GDP overlay and the province panel. */
-export function provinceGdp(nationId: string, population: number, resourceOutput: number): number {
-  const services = population * perCapitaFor(nationId);
+ *  extractive output. Used by the GDP overlay and the province panel.
+ *
+ *  `growthMult` carries the province forward along its nation's growth path
+ *  (sim/growth); it is a parameter rather than a clock read so this file stays
+ *  pure. Callers showing a figure to the player pass it; the overlay's log ramp
+ *  does not, since a decade of growth moves it a few percent of one decade. */
+export function provinceGdp(
+  nationId: string,
+  population: number,
+  resourceOutput: number,
+  growthMult = 1,
+): number {
+  const services = population * perCapitaFor(nationId) * growthMult;
   const extractive = resourceOutput * RESOURCE.gvaScale;
   return services + extractive;
 }

@@ -24,6 +24,7 @@ import { DiplomacyCard } from '@/features/diplomacy/DiplomacyCard';
 import { compact, money } from '@/lib/format';
 import { sortedDeposits, resourceColor } from '@/config/resources';
 import { provinceGdp } from '@/sim/economy';
+import { growthMultiplier } from '@/sim/nationLedger';
 import { buildCost, buildTimeDays, canBuild, isCoastal } from '@/sim/infrastructure';
 import { unrestBand } from '@/sim/unrest';
 import { reintegrationOdds } from '@/sim/independence';
@@ -501,7 +502,14 @@ export function DistrictDetailPanel() {
           <StatRow label="Population" value={compact(province.data.population)} accent="code" />
           <StatRow
             label="Province GDP"
-            value={money(provinceGdp(province.nationId, province.data.population, province.data.economy.resourceOutput))}
+            value={money(
+              provinceGdp(
+                province.nationId,
+                province.data.population,
+                province.data.economy.resourceOutput,
+                growthMultiplier(province.nationId),
+              ),
+            )}
             accent="gold"
           />
           {province.data.economy.resourceOutput > 0 && (

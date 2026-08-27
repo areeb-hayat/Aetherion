@@ -37,6 +37,15 @@ export function pct(v: number, digits = 0): string {
 }
 
 /** Convert hours-since-epoch into a calendar date label, e.g. "14 Mar 2027". */
+/** The campaign's calendar year at a given clock reading. The economy's own
+ *  year is 360 days (YEAR_HOURS), so anything the PLAYER is told about "the
+ *  year" must be dated from the calendar or the report slides five days
+ *  earlier every time it fires. */
+export function gameYear(gameHours: number): number {
+  const start = new Date(Date.UTC(SIM.epoch.year, SIM.epoch.month - 1, SIM.epoch.day));
+  return new Date(start.getTime() + gameHours * 3600 * 1000).getUTCFullYear();
+}
+
 export function gameDate(gameHours: number): string {
   const start = new Date(Date.UTC(SIM.epoch.year, SIM.epoch.month - 1, SIM.epoch.day));
   const d = new Date(start.getTime() + gameHours * 3600 * 1000);

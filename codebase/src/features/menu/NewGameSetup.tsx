@@ -17,7 +17,7 @@ import { useEconomyStore } from '@/store/economyStore';
 import { usePoliticsStore } from '@/store/politicsStore';
 import { useDiplomacyStore } from '@/store/diplomacyStore';
 import { getNationStat, resourceName, type NationStat } from '@/features/menu/nationStats';
-import { nationLedger } from '@/sim/nationLedger';
+import { openingLedger } from '@/sim/nationLedger';
 import { INCOME_LABEL } from '@/config/economy';
 import { resourceColor } from '@/config/resources';
 import { mapViz } from '@/config/tokens';
@@ -153,7 +153,8 @@ function Dossier({ nationId }: { nationId: string }) {
   const nation = useWorldStore((s) => s.nations.get(nationId));
   const nations = useWorldStore((s) => s.nations);
   const stat = getNationStat(nationId);
-  const ledger = useMemo(() => nationLedger(nationId), [nationId]);
+  // Year zero, always — see openingLedger.
+  const ledger = useMemo(() => openingLedger(nationId), [nationId]);
   if (!nation || !stat) return null;
 
   const dep = isDependency(nationId);

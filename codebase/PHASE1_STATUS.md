@@ -178,6 +178,29 @@ because the preview page reports `visibilityState: hidden` (rAF paused), so the
 ocean-sheen + selection-polish retune is reasoned/pixel-sampled, not eyeballed —
 worth a visual confirm.
 
+## DONE (2026-08-27) — the world economy MOVES
+Every nation's per-capita output used to be a constant: thirty game-years in,
+Germany was exactly as rich as on day one. `src/sim/growth.ts` puts the world in
+motion. A nation's path is CLOSED-FORM in game time — trend (convergence: poor
+economies catch up, conditional on the government archetype's state capacity) +
+a two-harmonic business cycle whose periods are hashed per nation, so booms and
+slumps are staggered and aperiodic. No per-nation state, no 280-nation loop:
+`growthFactor(id, years)` is one exponential of an exact integral, so year 40
+costs what year 1 costs. Knobs in `config/economy.ts` GROWTH.
+
+The ONE path-dependent part is the SCAR (economyStore `growth`, persist v4):
+war/sanctions/held-provinces compound damage daily onto the trend path, calm
+compounds a rebound back toward whole (floored at 55% of trend). Wired through
+`nationLedger` (so every nation's ledger is dated) and economyStore.recompute
+(the player's, scar included); the Statecraft Overview shows Growth / yr and a
+dispatch closes the books every 1 January. `openingLedger()` is the deliberate
+counterpart: the New Game dossier and the starting treasury read YEAR ZERO,
+because quitting to the menu suspends a campaign and leaves its clock standing.
+Verified headless against the real world.json: DEU $3.88T opening, +25% over a
+decade; a war scars Pakistan to −8% and peace rebuilds it; ~12% of quarters in
+contraction across the sample. `growthSelfCheck()` asserts the invariants on
+every DEV boot (`window.__growthCheck`).
+
 ## NEXT
 Naval movement, river names on hover, seasonal terrain. UI/HUD polish pass (the
 map is now "alive"; the surrounding panels/frame are the next elegance target).

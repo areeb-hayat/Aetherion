@@ -75,6 +75,9 @@ const logRamp = (v: number, lo: number, hi: number) =>
   v > 0 ? Math.max(0, Math.min(1, (Math.log10(v) - lo) / (hi - lo))) : 0;
 
 /** Realistic province output ($/yr) for the GDP heat map. */
+// ponytail: opening-year output — the ramp spans four decades of $, so a
+// campaign's growth moves a province's colour by a few percent of one step.
+// Pass sim/growth's multiplier here if the ramp is ever narrowed to a band.
 const gdpOf = (p: Province) => provinceGdp(p.nationId, p.data.population, p.data.economy.resourceOutput);
 
 const defs: Record<OverlayId, OverlayDef> = {

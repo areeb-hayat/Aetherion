@@ -36,7 +36,8 @@ import { useSimStore } from '@/store/simStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useDiplomacyStore, playerActor } from '@/store/diplomacyStore';
 import { usePoliticsStore } from '@/store/politicsStore';
-import { nationLedger } from '@/sim/nationLedger';
+import { nationLedger, growthMultiplier } from '@/sim/nationLedger';
+import { strainDrag, advanceScar, growthRate, yearsElapsed } from '@/sim/growth';
 import { computeLedger, provinceGdp, type LedgerMods } from '@/sim/economy';
 import { getNationStat } from '@/features/menu/nationStats';
 import {
@@ -65,7 +66,7 @@ import { baselineOpinion } from '@/sim/diplomacy';
 import { isSovereign } from '@/sim/sovereignty';
 import { POLITICS } from '@/config/autonomy';
 import { setNetPerHour, spendTreasury } from '@/engine/engineSingleton';
-import { gameDate, money } from '@/lib/format';
+import { gameDate, gameYear, money, pct } from '@/lib/format';
 
 export interface DevelopResult {
   ok: boolean;
@@ -116,12 +117,30 @@ export interface FinanceState {
 
 const FINANCE_ZERO: FinanceState = { debt: null, loans: [], imf: null, lastAccrual: 0 };
 
+/** Persisted growth state — the ONLY path-dependent part of the world economy.
+ *  Trend and cycle are closed-form in game time (sim/growth), so all that has
+ *  to survive a reload is the damage the campaign itself has done. */
+export interface GrowthState {
+  /** Multiplier on the trend path: 1 = unharmed, floored by GROWTH.scarFloor. */
+  scar: number;
+  /** Last realised annual rate (trend + cycle - strain), for the HUD. */
+  rate: number;
+  /** gameHours of the last growth advance (daily granularity). */
+  lastTick: number;
+  /** Campaign year last reported to the player, and the GDP it closed on. */
+  lastYear: number;
+  lastYearGdp: number;
+}
+
+const GROWTH_ZERO: GrowthState = { scar: 1, rate: 0, lastTick: 0, lastYear: 0, lastYearGdp: 0 };
+
 interface EconomyState {
   built: BuiltMap;
   projects: ConstructionProject[];
   ramping: RampEntry[];
   ledger: NationLedger | null;
   finance: FinanceState;
+  growth: GrowthState;
   /** Derived each recompute: how the deficit/surplus is being financed. */
   financing: FinancingSummary | null;
   /** Recompute the player ledger (including built development) + push the rate. */
@@ -141,6 +160,8 @@ interface EconomyState {
   tickConstruction: (gameHours: number) => void;
   /** Accrue bond issuance, amortize loans, release IMF tranches, reprice. */
   tickFinance: (gameHours: number) => void;
+  /** Advance the economy along its growth path; scar it while under strain. */
+  tickGrowth: (gameHours: number) => void;
   /* -- sovereign finance actions -- */
   repayBonds: () => FinanceResult;
   takeImfProgram: () => FinanceResult;
@@ -225,6 +246,7 @@ export const useEconomyStore = create<EconomyState>()(
       ramping: [],
       ledger: null,
       finance: FINANCE_ZERO,
+      growth: GROWTH_ZERO,
       financing: null,
 
       levels: (provinceId) => {
@@ -261,6 +283,9 @@ export const useEconomyStore = create<EconomyState>()(
           ratingFloor: imfActive ? IMF.ratingFloor : undefined,
           ratingCap: defaulted ? BILATERAL.repudiate.ratingCap : undefined,
           tradeMult: tradeMultFor(playerActor() ?? pid, stat.gdp),
+          // The economy is dated: carried forward along its growth path from the
+          // campaign start, less whatever the campaign has cost it.
+          gdpMult: growthMultiplier(pid, get().growth.scar),
         };
 
         // Base ledger (matches the pre-game dossier — approximated infra line).
@@ -280,6 +305,9 @@ export const useEconomyStore = create<EconomyState>()(
         let extraTrade = 0;
         let extraUpkeep = 0;
         const dev = base.development;
+        // Development pays off against the economy as it stands today, not as
+        // it stood on day one.
+        const grown = growthMultiplier(pid, get().growth.scar);
         for (const [idStr, built] of Object.entries(get().built)) {
           const p = getProvince(Number(idStr));
           if (!p || p.nationId !== pid) continue;
@@ -287,7 +315,7 @@ export const useEconomyStore = create<EconomyState>()(
           const cur = mergeLevels(bl, built);
           const eb = infraEffects(bl);
           const ec = infraEffects(cur);
-          const g0 = provinceGdp(pid, p.data.population, p.data.economy.resourceOutput);
+          const g0 = provinceGdp(pid, p.data.population, p.data.economy.resourceOutput, grown);
           extraGdp += g0 * (ec.gdpMult - eb.gdpMult);
           extraTrade += g0 * (ec.tradeMult - eb.tradeMult) * TRADE.baseShare;
           extraUpkeep += upkeepCost(p, cur) - upkeepCost(p, bl);
@@ -302,7 +330,7 @@ export const useEconomyStore = create<EconomyState>()(
           const frac = Math.max(0, Math.min(1, (now - r.completedAt) / RAMP_HOURS));
           if (frac >= 1) continue;
           const e = DEV_SLOTS[r.slotId].effect;
-          const g0 = provinceGdp(pid, p.data.population, p.data.economy.resourceOutput);
+          const g0 = provinceGdp(pid, p.data.population, p.data.economy.resourceOutput, grown);
           const hold = 1 - frac;
           extraGdp -= (e.gdpPerTier ?? 0) * g0 * hold;
           extraTrade -= (e.tradePerTier ?? 0) * g0 * TRADE.baseShare * hold;
@@ -449,6 +477,7 @@ export const useEconomyStore = create<EconomyState>()(
       tickEconomy: (gameHours) => {
         get().tickConstruction(gameHours);
         get().tickFinance(gameHours);
+        get().tickGrowth(gameHours);
       },
 
       tickConstruction: (gameHours) => {
@@ -492,6 +521,71 @@ export const useEconomyStore = create<EconomyState>()(
         if (s.ramping.length && day !== lastRampRecomputeDay) {
           lastRampRecomputeDay = day;
           get().recompute();
+        }
+      },
+
+      /* -- Growth: the world economy moves ------------------------------ */
+      // Trend and cycle are closed-form in game time, so a day of growth costs
+      // one exponential — no per-nation loop. Only the SCAR is stateful: war,
+      // sanctions and separatist control compound damage onto the trend path,
+      // and calm compounds recovery back toward whole.
+      tickGrowth: (gameHours) => {
+        const pid = useSessionStore.getState().playerNation;
+        if (!pid) return;
+        const g = get().growth;
+        const days = Math.floor((gameHours - g.lastTick) / 24);
+        if (days < 1) return;
+
+        const actor = playerActor() ?? pid;
+        const d = useDiplomacyStore.getState();
+        const wars = Object.keys(d.wars).filter((k) => k.split('|').includes(actor)).length;
+        const sanctions = Object.entries(d.sanctions).filter(
+          ([k, list]) => k.endsWith(`>${actor}`) && list.length > 0,
+        ).length;
+        const world = useWorldStore.getState();
+        const insurgencies = Object.keys(usePoliticsStore.getState().breakaways).filter(
+          (id) => world.provinces.get(Number(id))?.nationId === pid,
+        ).length;
+
+        const drag = strainDrag({ wars, sanctions, insurgencies });
+        const years = yearsElapsed(gameHours);
+        set({
+          growth: {
+            ...g,
+            scar: advanceScar(g.scar, drag, days),
+            rate: growthRate(pid, years) - drag,
+            lastTick: gameHours,
+          },
+        });
+        get().recompute();
+
+        // Close the books once a game-year: the player is told what the economy
+        // actually did, in the same wire-dispatch language as everything else.
+        // Measured GDP against GDP over whatever interval actually elapsed, so
+        // the figure is true however the model's year and the calendar differ.
+        const gdp = get().ledger?.gdp ?? 0;
+        const year = gameYear(gameHours);
+        if (year > g.lastYear || g.lastYearGdp === 0) {
+          if (year > g.lastYear && g.lastYearGdp > 0) {
+            const realised = gdp / g.lastYearGdp - 1;
+            const up = realised >= 0.005;
+            const down = realised <= -0.005;
+            useNotificationStore.getState().push({
+              id: crypto.randomUUID(),
+              gameDate: gameDate(gameHours),
+              category: 'ECONOMIC',
+              severity: down ? 'MEDIUM' : 'INFO',
+              headline: down
+                ? `Recession — the economy contracted ${pct(Math.abs(realised), 1)}`
+                : up
+                  ? `The year closes — the economy grew ${pct(realised, 1)}`
+                  : 'The year closes — the economy held flat',
+              detail: down
+                ? 'Output fell over the year. Receipts follow output: expect the balance to tighten before it eases.'
+                : 'Output over the past year, measured against the year before. Tax receipts move with it.',
+            });
+          }
+          set({ growth: { ...get().growth, lastYear: year, lastYearGdp: gdp } });
         }
       },
 
@@ -777,21 +871,22 @@ export const useEconomyStore = create<EconomyState>()(
       },
 
       reset: () => {
-        set({ built: {}, projects: [], ramping: [], ledger: null, finance: FINANCE_ZERO, financing: null });
+        set({ built: {}, projects: [], ramping: [], ledger: null, finance: FINANCE_ZERO, growth: GROWTH_ZERO, financing: null });
         setNetPerHour(0);
       },
     }),
     {
       name: 'aetherion.economy.v1',
       storage: createJSONStorage(() => localStorage),
-      version: 3,
+      version: 4,
       migrate: (persisted, version) => {
         const p = (persisted ?? {}) as Record<string, unknown>;
         if (version < 2) return { ...p, projects: [], ramping: [], finance: FINANCE_ZERO };
-        if (version < 3) return { ...p, finance: FINANCE_ZERO };
+        if (version < 3) return { ...p, finance: FINANCE_ZERO, growth: GROWTH_ZERO };
+        if (version < 4) return { ...p, growth: GROWTH_ZERO };
         return p;
       },
-      partialize: (s) => ({ built: s.built, projects: s.projects, ramping: s.ramping, finance: s.finance }),
+      partialize: (s) => ({ built: s.built, projects: s.projects, ramping: s.ramping, finance: s.finance, growth: s.growth }),
     },
   ),
 );

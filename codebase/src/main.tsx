@@ -26,6 +26,15 @@ injectCssVariables();
 // DEV-only console handles (same convention as window.__globe): lets tooling
 // and debugging sessions drive the stores headlessly.
 if (import.meta.env.DEV) {
+  // The growth model is the one piece of the economy that compounds silently
+  // over decades, so it proves its own invariants on every dev boot rather
+  // than waiting for someone to notice a nation quietly became a superpower.
+  import('@/sim/growth').then(({ growthSelfCheck }) => {
+    (window as unknown as { __growthCheck: () => boolean }).__growthCheck = growthSelfCheck;
+    growthSelfCheck();
+    console.info('[growth] self-check OK');
+  });
+
   Promise.all([
     import('@/store/sessionStore'),
     import('@/store/diplomacyStore'),
