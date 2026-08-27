@@ -2,3 +2,7 @@
 
 # The installed desktop app (built with `pnpm desktop` in codebase/).
 Aetherion.exe
+
+# Shareable build output (`pnpm release` in codebase/).
+release/
+Aetherion-*-windows.zip
