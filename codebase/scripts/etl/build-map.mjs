@@ -589,11 +589,18 @@ export function buildMap() {
 
   // Nations. geoBoundaries' numeric placeholder codes (Aksai Chin's "112" etc.)
   // have no NE entry — give them a readable name instead of the raw number.
+  // A few real ISO codes also arrive with no Natural Earth admin-0 counterpart
+  // to take a name from; without these they show in the game's panels as their
+  // raw code ("SSD moves against Sudan").
+  const ISO_NAME = { XKX: 'Kosovo', SSD: 'South Sudan', ESH: 'Western Sahara' };
   const nations = new Map();
   for (const p of raw) if (!nations.has(p.nationCode))
     nations.set(p.nationCode, {
       code: p.nationCode,
-      name: nationGeom.get(p.nationCode)?.name || (/^\d+$/.test(p.nationCode) ? 'Disputed Territory' : p.nationCode),
+      name:
+        nationGeom.get(p.nationCode)?.name ||
+        ISO_NAME[p.nationCode] ||
+        (/^\d+$/.test(p.nationCode) ? 'Disputed Territory' : p.nationCode),
     });
   const nationList = [...nations.values()].sort((a, b) => a.code.localeCompare(b.code));
 
