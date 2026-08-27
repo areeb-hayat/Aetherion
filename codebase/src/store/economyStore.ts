@@ -37,6 +37,7 @@ import { useNotificationStore } from '@/store/notificationStore';
 import { useDiplomacyStore, playerActor } from '@/store/diplomacyStore';
 import { usePoliticsStore } from '@/store/politicsStore';
 import { nationLedger, growthMultiplier } from '@/sim/nationLedger';
+import { commodityPosition, pricedResourceOutput } from '@/sim/market';
 import { strainDrag, advanceScar, growthRate, yearsElapsed } from '@/sim/growth';
 import { computeLedger, provinceGdp, type LedgerMods } from '@/sim/economy';
 import { getNationStat } from '@/features/menu/nationStats';
@@ -270,6 +271,9 @@ export const useEconomyStore = create<EconomyState>()(
         }
         const fin = get().finance;
         const now = useSimStore.getState().gameHours;
+        const marketYears = yearsElapsed(now);
+        const grown = growthMultiplier(pid, get().growth.scar);
+        const market = commodityPosition(pid, stat.resourceTotals, stat.population * stat.gdpPerCapita * grown, marketYears);
         const imfActive = !!fin.imf?.active;
         const defaulted = fin.defaultUntil != null && now < fin.defaultUntil;
 
@@ -284,8 +288,9 @@ export const useEconomyStore = create<EconomyState>()(
           ratingCap: defaulted ? BILATERAL.repudiate.ratingCap : undefined,
           tradeMult: tradeMultFor(playerActor() ?? pid, stat.gdp),
           // The economy is dated: carried forward along its growth path from the
-          // campaign start, less whatever the campaign has cost it.
-          gdpMult: growthMultiplier(pid, get().growth.scar),
+          // campaign start, less whatever the campaign has cost it, and swung by
+          // what the world is paying this year for what we sell and burn.
+          gdpMult: grown * market.termsOfTrade,
         };
 
         // Base ledger (matches the pre-game dossier — approximated infra line).
@@ -294,7 +299,8 @@ export const useEconomyStore = create<EconomyState>()(
             id: pid,
             population: stat.population,
             provinceCount: stat.provinceCount,
-            resourceOutput: stat.resourceOutput,
+            // Royalties are levied on what the ground is worth TODAY.
+            resourceOutput: pricedResourceOutput(stat.resourceTotals, marketYears),
           },
           mods,
         );
@@ -305,9 +311,6 @@ export const useEconomyStore = create<EconomyState>()(
         let extraTrade = 0;
         let extraUpkeep = 0;
         const dev = base.development;
-        // Development pays off against the economy as it stands today, not as
-        // it stood on day one.
-        const grown = growthMultiplier(pid, get().growth.scar);
         for (const [idStr, built] of Object.entries(get().built)) {
           const p = getProvince(Number(idStr));
           if (!p || p.nationId !== pid) continue;

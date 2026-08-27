@@ -23,7 +23,8 @@ import { useEconomyStore } from '@/store/economyStore';
 import { useDiplomacyStore, playerActor } from '@/store/diplomacyStore';
 import { usePoliticsStore } from '@/store/politicsStore';
 import { getNationStat } from '@/features/menu/nationStats';
-import { nationLedger } from '@/sim/nationLedger';
+import { nationLedger, marketPosition } from '@/sim/nationLedger';
+import { marketBoard } from '@/sim/market';
 import { INCOME_LABEL, TRADE, YEAR_HOURS } from '@/config/economy';
 import { IMF, BILATERAL, BOND } from '@/config/finance';
 import { imfEligible } from '@/sim/finance';
@@ -315,7 +316,68 @@ function Budget({ ledger, playerNation }: { ledger: NationLedger; playerNation: 
         </span>
       </div>
 
+      <CommodityMarket playerNation={playerNation} />
+
       <SovereignFinance ledger={ledger} playerNation={playerNation} />
+    </>
+  );
+}
+
+/* ---- the commodity market (GDD Ch.14): what the world pays this year ------- */
+
+const CATEGORY_LABEL: Record<string, string> = {
+  FUEL: 'Energy',
+  INDUSTRIAL: 'Industrial metals',
+  AGRICULTURE: 'Agricultural',
+  STRATEGIC: 'Strategic minerals',
+};
+
+function CommodityMarket({ playerNation }: { playerNation: string }) {
+  const gameHours = useSimStore((s) => s.gameHours);
+  const years = yearsElapsed(gameHours);
+  const board = marketBoard(years);
+  const pos = marketPosition(playerNation);
+  if (!pos) return null;
+  const swing = pos.termsOfTrade - 1;
+
+  return (
+    <>
+      <SectionTitle
+        right={
+          <span className="font-mono text-[11px] tabular-nums" style={{ color: balanceColor(pos.net) }}>
+            {signedMoney(pos.net)}/yr
+          </span>
+        }
+      >
+        Commodity Market
+      </SectionTitle>
+      <p className="mb-2 font-sans text-[10.5px] leading-snug text-slate">
+        {pos.net >= 0
+          ? 'You sell more to the world than you buy from it. Rising prices carry your economy up with them.'
+          : 'You buy more from the world than you sell to it. Rising prices are a tax on everything you make.'}
+      </p>
+      {board.map((b) => {
+        const move = b.index - 1;
+        return (
+          <div key={b.category} className="flex items-baseline justify-between py-[3px]">
+            <span className="font-sans text-[10.5px] text-slate">{CATEGORY_LABEL[b.category] ?? b.category}</span>
+            <span className="font-mono text-[11px] tabular-nums" style={{ color: move >= 0 ? color.goldLight : color.codeBlue }}>
+              {b.index.toFixed(2)}× <span className="text-[10px] text-slate">({move >= 0 ? '+' : ''}{pct(move, 1)})</span>
+            </span>
+          </div>
+        );
+      })}
+      <div className="mt-2 flex items-center justify-between border-t border-steel/40 pt-2">
+        <span
+          className="font-display text-[10px] uppercase tracking-[0.2em] text-slate"
+          title="What the swing in world prices since the campaign opened is worth to your economy, up or down"
+        >
+          Terms of Trade
+        </span>
+        <span className="font-mono text-sm tabular-nums" style={{ color: balanceColor(swing) }}>
+          {swing >= 0 ? '+' : ''}{pct(swing, 1)} of output
+        </span>
+      </div>
     </>
   );
 }

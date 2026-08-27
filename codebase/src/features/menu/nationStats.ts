@@ -30,6 +30,9 @@ export interface NationStat {
   strategicValue: number; // summed province strategic value
   capital: string | null;
   topResources: { id: string; total: number }[]; // dominant deposits, richest first
+  /** Every deposit it holds, richness points by resource id — what the
+   *  commodity market prices (sim/market). At most 29 entries. */
+  resourceTotals: Record<string, number>;
   terrainMix: { terrain: string; count: number }[]; // most common biomes first
   tier: PowerTier;
   /** Population-weighted Equal-Earth centroid — proximity for diplomacy. */
@@ -148,6 +151,7 @@ function build(): Map<string, NationStat> {
       gdpPerCapita: perCapita,
       government: governmentFor(id),
       resourceOutput: a?.resourceOutput || 0,
+      resourceTotals: a ? Object.fromEntries(a.resources) : {},
       strategicValue: Math.round(a?.strategicValue || 0),
       capital: capitalByNation.get(id)?.name ?? null,
       topResources,

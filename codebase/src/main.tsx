@@ -38,6 +38,10 @@ if (import.meta.env.DEV) {
     foreignPolicySelfCheck();
     console.info('[ai] foreign-policy self-check OK');
   });
+  import('@/sim/market').then(({ marketSelfCheck }) => {
+    marketSelfCheck();
+    console.info('[market] self-check OK');
+  });
 
   Promise.all([
     import('@/store/sessionStore'),
