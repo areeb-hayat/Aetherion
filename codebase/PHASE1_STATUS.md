@@ -201,6 +201,29 @@ decade; a war scars Pakistan to −8% and peace rebuilds it; ~12% of quarters in
 contraction across the sample. `growthSelfCheck()` asserts the invariants on
 every DEV boot (`window.__growthCheck`).
 
+## DONE (2026-08-27) — the world conducts its own foreign policy
+`src/sim/aiForeignPolicy.ts` fills the LOD slot the scheduler reserved. The
+~103 powers named in `blocs.json` act; everyone else has no foreign policy
+worth simulating and costs nothing. Each watches its rivals, its partners, a
+rotating window of its bloc and the player; four think per game-day (about
+monthly per power, under a millisecond a day). `applyEffects` in the diplomacy
+store is now shared by the player's `act` and the AI's `aiAct`, so an action
+means the same thing whoever takes it. **War is not on the AI's menu** — there
+is no military system to resolve one. **The AI never signs a treaty WITH the
+player** either: a treaty binds both sides and the player has not been asked
+(the offer/acceptance dialogue is GDD Ch.06). Two calibration lessons, both
+found by measuring an 8-year headless campaign: a treaty that restates a bloc
+the pair already shares is paperwork (alliances only form outside a military
+bloc, trade deals outside an economic one — 2,027 treaties became 303), and a
+saturation guard has to read how the TARGET sees the actor, since that is where
+an action's weight falls, or every rivalry pins to exactly -100.
+
+## DONE (2026-08-27) — desktop app
+`pnpm desktop` builds a 71 MB Tauri binary with all 268 MB of map data
+compressed inside, and refreshes the copy at the repo root that the desktop
+shortcut points at. `tauri.conf.json` had a `comment` key inside `app.security`
+that the v2 schema rejects — the build could not start until it went.
+
 ## NEXT
 Naval movement, river names on hover, seasonal terrain. UI/HUD polish pass (the
 map is now "alive"; the surrounding panels/frame are the next elegance target).
